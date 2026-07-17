@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://amigenome.com/sitemap.xml

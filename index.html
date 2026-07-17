@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>amiGenomeAI — AI Genomics &amp; Genetics Companion</title>
+<meta name="description" content="AI-powered genomics companion. Dual-engine verified advice on genetics, bioinformatics, sequencing, and clinical genomics.">
+<meta name="keywords" content="genomics AI, genetics, bioinformatics, sequencing, CRISPR, variant calling, pharmacogenomics">
+<meta property="og:title" content="amiGenomeAI — AI Genomics & Genetics Companion">
+<meta property="og:description" content="Dual-engine AI for genomics, bioinformatics, sequencing, and clinical genetics.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://amigenome.com">
+<link rel="canonical" href="https://amigenome.com">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07060d;--surface:#0f0e1a;--surface2:#161528;--text:#e4e0f4;--text2:#9490b8;--accent:#a78bfa;--cyan:#22d3ee;--border:#1e1a38;--radius:14px;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.hero{text-align:center;padding:4rem 1.5rem 3rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;left:-20%;width:140%;height:140%;background:radial-gradient(ellipse at 50% 30%,rgba(167,139,250,.12) 0%,rgba(34,211,238,.06) 40%,transparent 65%);pointer-events:none}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;margin-bottom:.5rem;position:relative}
+.hero h1 .icon{font-size:clamp(2.2rem,5vw,3.4rem)}
+.hero .tagline{font-size:clamp(1rem,2.5vw,1.25rem);color:var(--text2);max-width:620px;margin:0 auto 1rem;line-height:1.7}
+.badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);border:1px solid var(--border);padding:.35rem .9rem;border-radius:20px;font-size:.8rem;color:var(--accent)}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.lang-toggle{display:flex;gap:.3rem;justify-content:center;margin-top:.8rem}
+.lang-toggle button{background:var(--surface);border:1px solid var(--border);color:var(--text2);padding:.25rem .7rem;border-radius:6px;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s}
+.lang-toggle button.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem;text-align:left;transition:border-color .2s}
+.card:hover{border-color:var(--accent)}
+.card .ci{font-size:1.6rem;margin-bottom:.5rem}
+.card h3{font-size:.95rem;margin-bottom:.3rem;color:var(--text)}
+.card p{font-size:.8rem;color:var(--text2);line-height:1.5}
+.demo-preview{max-width:700px;margin:1.5rem auto 2.5rem;padding:0 1.5rem}
+.demo-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;font-size:.85rem;color:var(--text2);line-height:1.8}
+.demo-box .g{color:var(--accent)}
+.demo-box .a{color:var(--cyan)}
+.demo-box .r{color:#ef4444}
+.chat-section{max-width:700px;margin:0 auto 2rem;padding:0 1.5rem}
+.chat-section h2{text-align:center;font-size:1.3rem;margin-bottom:1rem}
+.chat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+#messages{padding:1.2rem;min-height:120px;max-height:420px;overflow-y:auto}
+.msg{margin-bottom:1rem;padding:.8rem 1rem;border-radius:10px;font-size:.9rem;line-height:1.7;max-width:88%;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg.assistant{background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+.msg.user{background:var(--accent);color:#000;margin-left:auto;text-align:right}
+.msg.system{background:transparent;border:1px dashed var(--border);color:var(--text2);text-align:center;max-width:100%;font-size:.85rem}
+.meta{font-size:.7rem;color:var(--text2);margin-top:.4rem;opacity:.7}
+.input-row{display:flex;gap:.5rem;padding:.8rem;border-top:1px solid var(--border)}
+#userInput{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.65rem 1rem;color:var(--text);font-size:.9rem;font-family:var(--font);outline:none;resize:none}
+#userInput:focus{border-color:var(--accent)}
+#sendBtn{background:var(--accent);color:#000;border:none;border-radius:10px;padding:.65rem 1.3rem;font-weight:600;cursor:pointer;font-size:.9rem;transition:background .2s}
+#sendBtn:hover{background:#8b5cf6}
+#sendBtn:disabled{opacity:.5;cursor:not-allowed}
+.free-note{text-align:center;font-size:.8rem;color:var(--text2);margin:1rem 0}
+.upgrade-row{text-align:center;margin:1rem 0 2rem}
+.upgrade-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#000;font-weight:700;padding:.7rem 1.8rem;border-radius:10px;border:none;cursor:pointer;font-size:.95rem;transition:transform .15s}
+.upgrade-btn:hover{transform:scale(1.03);text-decoration:none}
+.features{max-width:800px;margin:0 auto 3rem;padding:0 1.5rem}
+.features h2{text-align:center;font-size:1.3rem;margin-bottom:1.5rem}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem}
+.feat h3{font-size:.9rem;margin-bottom:.3rem}
+.feat p{font-size:.8rem;color:var(--text2)}
+.compliance{max-width:700px;margin:0 auto 2rem;padding:0 1.5rem;text-align:center}
+.compliance-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;margin-top:.8rem}
+.cbadge{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.4rem .9rem;font-size:.75rem;color:var(--text2);cursor:pointer;transition:border-color .2s}
+.cbadge:hover{border-color:var(--accent)}
+footer{text-align:center;padding:2rem 1.5rem;color:var(--text2);font-size:.75rem;border-top:1px solid var(--border)}
+footer a{color:var(--accent)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.active{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);max-width:600px;width:100%;max-height:80vh;overflow-y:auto;padding:2rem;position:relative}
+.modal h2{margin-bottom:1rem;font-size:1.2rem}
+.modal p,.modal li{font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:.5rem}
+.modal ul{padding-left:1.2rem}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1><span class="icon">🧬</span> amiGenomeAI</h1>
+  <p class="tagline" data-i18n="tagline">AI Genomics & Genetics Companion — dual-engine verified</p>
+  <div class="badge"><span class="dot"></span> Grok + DeepSeek dual-engine</div>
+  <div class="lang-toggle"><button onclick="switchLang('en')" id="langEn" class="active">EN</button><button onclick="switchLang('ro')" id="langRo">RO</button></div>
+</div>
+<div class="cards">
+  <div class="card"><div class="ci">🔬</div><h3 data-i18n="card1_h">Sequencing & Bioinformatics</h3><p data-i18n="card1_p">WGS, RNA-seq, variant calling, pipelines, quality control, and data analysis</p></div>
+  <div class="card"><div class="ci">💊</div><h3 data-i18n="card2_h">Clinical Genomics</h3><p data-i18n="card2_p">Variant classification, pharmacogenomics, tumor profiling, genetic testing</p></div>
+  <div class="card"><div class="ci">✂️</div><h3 data-i18n="card3_h">Gene Editing</h3><p data-i18n="card3_p">CRISPR-Cas9/12/13, guide RNA design, base editing, prime editing, delivery</p></div>
+  <div class="card"><div class="ci">🌍</div><h3 data-i18n="card4_h">Population Genetics</h3><p data-i18n="card4_p">GWAS, ancestry, selection, admixture, Hardy-Weinberg, linkage disequilibrium</p></div>
+</div>
+<div class="demo-preview">
+  <div class="demo-box">
+    <span class="g">🧬 Variant Analysis</span><br>
+    <span class="a">📋 BRCA2 c.5946delT — Classification:</span><br>
+    &nbsp;&nbsp;1. <span class="g">✅</span> ClinVar: Pathogenic (reviewed by expert panel)<br>
+    &nbsp;&nbsp;2. <span class="a">⚠️</span> Frameshift → premature stop codon at p.Ser1982ArgfsTer22<br>
+    &nbsp;&nbsp;3. <span class="g">📊</span> gnomAD frequency: 0.00004 (extremely rare)<br>
+    <span class="g">🔬 Next: Confirm with ACMG criteria (PVS1, PM2, PP5)</span><br>
+    <span class="a">⚠️ Clinical interpretation requires genetic counselor review</span>
+  </div>
+</div>
+<div class="chat-section">
+  <h2 data-i18n="chat_h2">Ask about genomics & genetics</h2>
+  <div class="chat-box">
+    <div id="messages">
+      <div class="msg system">🧬 amiGenomeAI — dual-engine verified genomics advice. 5 free questions/day.<br><em>Not a genetic counselor. For clinical results, consult a certified professional.</em></div>
+    </div>
+    <div class="input-row">
+      <textarea id="userInput" rows="1" maxlength="2000" placeholder="e.g. How do I set up a GATK variant calling pipeline?" data-i18n="placeholder"></textarea>
+      <button id="sendBtn" onclick="sendMessage()" data-i18n="send">Send</button>
+    </div>
+  </div>
+  <p class="free-note">Free: 5 questions/day &nbsp;|&nbsp; <strong>Pro:</strong> unlimited</p>
+  <div class="upgrade-row"><button class="upgrade-btn" onclick="upgrade()"><span data-i18n="upgrade">🧬 Upgrade to Pro — €9.99/mo</span></button></div>
+</div>
+<div class="features">
+  <h2 data-i18n="feat_h2">What amiGenomeAI can help with</h2>
+  <div class="feat-grid">
+    <div class="feat"><h3>🔬 Sequencing</h3><p>WGS, WES, RNA-seq, single-cell, long-read, library prep, QC, coverage</p></div>
+    <div class="feat"><h3>💻 Bioinformatics</h3><p>BWA, STAR, GATK, DeepVariant, VEP, Nextflow, Snakemake, IGV</p></div>
+    <div class="feat"><h3>💊 Pharmacogenomics</h3><p>CYP450, DPYD, HLA typing, drug-gene interactions, PharmGKB, CPIC</p></div>
+    <div class="feat"><h3>🏥 Clinical Genomics</h3><p>ACMG classification, tumor profiling, ctDNA, companion diagnostics</p></div>
+    <div class="feat"><h3>✂️ CRISPR & Editing</h3><p>Guide design, off-target analysis, base/prime editing, delivery methods</p></div>
+    <div class="feat"><h3>📊 Databases</h3><p>ClinVar, gnomAD, COSMIC, OMIM, Ensembl, UniProt, PDB, STRING</p></div>
+  </div>
+</div>
+<div class="compliance">
+  <p data-i18n="compliance_p">Regulation-aware AI</p>
+  <div class="compliance-badges">
+    <span class="cbadge" onclick="showModal('euai')">🇪🇺 EU AI Act</span>
+    <span class="cbadge" onclick="showModal('gdpr')">🛡️ GDPR</span>
+    <span class="cbadge" onclick="showModal('privacy')">🔒 Privacy</span>
+    <span class="cbadge" onclick="showModal('terms')">📄 Terms</span>
+  </div>
+</div>
+<footer>
+  &copy; 2025 amiGenomeAI &nbsp;|&nbsp; <a href="mailto:hello@amigenome.com">Contact</a>
+  &nbsp;|&nbsp; <a href="#" onclick="showModal('privacy');return false">Privacy</a>
+  &nbsp;|&nbsp; <a href="#" onclick="showModal('terms');return false">Terms</a>
+  <br><br>
+  <span style="font-size:.7rem;color:#555">
+    amiGenomeAI is an AI genomics advisory tool — not a substitute for genetic counselors, clinical geneticists, or medical professionals.<br>
+    EU AI Act (Reg. 2024/1689) Art. 50 — limited-risk AI, transparency provided. GDPR Art. 9 — genetic data sensitivity respected.
+  </span>
+</footer>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+<script>
+const API_BASE='https://amigenome-api-production.up.railway.app';
+const FREE_LIMIT=5;
+const STORAGE_KEY='amigenome_usage';
+function getUsage(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');const t=new Date().toISOString().slice(0,10);if(d.date!==t)return{date:t,count:0};return d}catch(e){return{date:new Date().toISOString().slice(0,10),count:0}}}
+function setUsage(u){localStorage.setItem(STORAGE_KEY,JSON.stringify(u))}
+function addMsg(text,role,meta){const d=document.getElementById('messages');const m=document.createElement('div');m.className='msg '+role;m.innerHTML=text.replace(/\n/g,'<br>');if(meta){const s=document.createElement('div');s.className='meta';s.textContent=meta;m.appendChild(s)}d.appendChild(m);d.scrollTop=d.scrollHeight}
+async function sendMessage(){
+const inp=document.getElementById('userInput'),btn=document.getElementById('sendBtn');
+const msg=inp.value.trim();if(!msg)return;
+const usage=getUsage();
+if(usage.count>=FREE_LIMIT){addMsg('Daily free limit reached. Upgrade to Pro for unlimited access.','system');return}
+addMsg(msg,'user');inp.value='';btn.disabled=true;
+try{
+const r=await fetch(API_BASE+'/companion/genome/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,locale:navigator.language?.slice(0,2)||'EN'})});
+if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.detail||r.statusText)}
+const d=await r.json();
+const meta=d.concordance!=null?`Engine: ${d.engine} | Concordance: ${(d.concordance*100).toFixed(0)}% | ${d.decision} | ${d.latency_s.toFixed(1)}s`:`Engine: ${d.engine}`;
+addMsg(d.response,'assistant',meta);
+usage.count++;setUsage(usage);
+}catch(e){addMsg('Connection error: '+e.message,'system')}
+btn.disabled=false;inp.focus()
+}
+document.getElementById('userInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}});
+async function upgrade(){
+try{const r=await fetch(API_BASE+'/create-checkout-session',{method:'POST'});
+if(!r.ok)throw new Error('Checkout unavailable');
+const d=await r.json();window.location.href=d.url}catch(e){alert('Checkout unavailable: '+e.message)}
+}
+const modals={
+euai:`<h2>🇪🇺 EU AI Act Compliance</h2><p>amiGenomeAI is classified as <strong>limited-risk AI</strong> under Regulation (EU) 2024/1689.</p><ul><li><strong>Art. 50 Transparency:</strong> Users are clearly informed they interact with an AI system</li><li><strong>Dual-engine verification:</strong> Two independent AI models cross-check every response</li><li><strong>No autonomous decisions:</strong> Advisory tool only — users and clinicians make all decisions</li><li><strong>GDPR Art. 9:</strong> Genetic data is special-category — we process no personal genomic data</li><li><strong>Human oversight:</strong> Always recommends consulting certified genetic counselors</li></ul><p>Provider: amiGenomeAI, Timișoara, Romania, EU.</p>`,
+gdpr:`<h2>🛡️ GDPR Compliance</h2><p>Data protection under Regulation (EU) 2016/679:</p><ul><li><strong>No genomic data storage:</strong> We never process, store, or request personal genetic data</li><li><strong>No chat storage:</strong> Queries processed in real-time, never persisted</li><li><strong>No user profiles:</strong> No accounts required for free tier</li><li><strong>Art. 9 compliance:</strong> Special-category data (genetic) is never collected</li><li><strong>Stripe payments:</strong> Handled by Stripe Inc. (PCI DSS certified)</li><li><strong>Data requests:</strong> Email privacy@amigenome.com</li></ul>`,
+privacy:`<h2>🔒 Privacy Policy</h2><p><strong>amiGenomeAI</strong> — last updated: July 2025</p><ul><li><strong>Data collected:</strong> None persistently. Chat is stateless.</li><li><strong>Genetic data:</strong> We NEVER request, process, or store personal genomic data (VCFs, FASTQ, BAM files)</li><li><strong>localStorage:</strong> Daily question counter + language preference only</li><li><strong>Payments:</strong> Processed entirely by Stripe.</li><li><strong>Analytics:</strong> None. No tracking pixels, no cookies.</li><li><strong>Third parties:</strong> Grok (xAI) and DeepSeek process queries in real-time with no retention</li></ul><p>Contact: privacy@amigenome.com</p>`,
+terms:`<h2>📄 Terms of Service</h2><p><strong>amiGenomeAI</strong> — last updated: July 2025</p><ul><li><strong>Service:</strong> AI-powered genomics and genetics advisory tool</li><li><strong>Not a substitute:</strong> For genetic counselors, clinical geneticists, or medical professionals</li><li><strong>No clinical diagnosis:</strong> We never interpret individual patient genomic data as diagnosis</li><li><strong>No dosing advice:</strong> Pharmacogenomics info is educational — dosing requires clinical oversight</li><li><strong>Free tier:</strong> 5 questions/day, no account required</li><li><strong>Pro tier:</strong> €9.99/month, cancel anytime via Stripe portal</li><li><strong>Liability:</strong> We are not liable for clinical decisions based on our outputs</li></ul><p>Contact: hello@amigenome.com</p>`
+};
+function showModal(k){document.getElementById('modalContent').innerHTML=modals[k]||'';document.getElementById('modalOverlay').classList.add('active')}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('active')}
+// i18n
+const T={"tagline":{"en":"AI Genomics & Genetics Companion — dual-engine verified","ro":"Companion AI Genomică & Genetică — verificat cu motor dual"},"card1_h":{"en":"Sequencing & Bioinformatics","ro":"Secvențiere & Bioinformatică"},"card1_p":{"en":"WGS, RNA-seq, variant calling, pipelines, quality control, and data analysis","ro":"WGS, RNA-seq, identificare variante, pipeline-uri, control calitate și analiză date"},"card2_h":{"en":"Clinical Genomics","ro":"Genomică Clinică"},"card2_p":{"en":"Variant classification, pharmacogenomics, tumor profiling, genetic testing","ro":"Clasificare variante, farmacogenomică, profilare tumorală, testare genetică"},"card3_h":{"en":"Gene Editing","ro":"Editare Genetică"},"card3_p":{"en":"CRISPR-Cas9/12/13, guide RNA design, base editing, prime editing, delivery","ro":"CRISPR-Cas9/12/13, design ARN ghid, editare baze, prime editing, livrare"},"card4_h":{"en":"Population Genetics","ro":"Genetică Populațională"},"card4_p":{"en":"GWAS, ancestry, selection, admixture, Hardy-Weinberg, linkage disequilibrium","ro":"GWAS, ancestralitate, selecție, amestec, Hardy-Weinberg, dezechilibru de legătură"},"chat_h2":{"en":"Ask about genomics & genetics","ro":"Întreabă despre genomică & genetică"},"placeholder":{"en":"e.g. How do I set up a GATK variant calling pipeline?","ro":"ex. Cum configurez un pipeline GATK pentru identificarea variantelor?"},"send":{"en":"Send","ro":"Trimite"},"upgrade":{"en":"🧬 Upgrade to Pro — €9.99/mo","ro":"🧬 Upgrade la Pro — €9.99/lună"},"feat_h2":{"en":"What amiGenomeAI can help with","ro":"Cum te poate ajuta amiGenomeAI"},"compliance_p":{"en":"Regulation-aware AI","ro":"AI conform cu legislația"}};
+let currentLang=localStorage.getItem('amigenome_lang')||'en';
+function switchLang(lang){currentLang=lang;localStorage.setItem('amigenome_lang',lang);document.getElementById('langEn').classList.toggle('active',lang==='en');document.getElementById('langRo').classList.toggle('active',lang==='ro');document.documentElement.lang=lang==='ro'?'ro':'en';document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(T[key]&&T[key][lang]){if(el.tagName==='TEXTAREA'||el.tagName==='INPUT')el.placeholder=T[key][lang];else el.textContent=T[key][lang]}})}
+document.addEventListener('DOMContentLoaded',()=>{if(currentLang!=='en')switchLang(currentLang)});
+</script>
+</body>
+</html>

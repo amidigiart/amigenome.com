@@ -1,0 +1,8 @@
+# amiGenomeAI
+## AI Genomics & Genetics Companion
+- Dual-engine (Grok + DeepSeek) with concordance verification
+- Sequencing, bioinformatics, clinical genomics, CRISPR, pharmacogenomics
+- EU AI Act Art. 50 compliant, GDPR stateless, Art. 9 genetic data respected
+- API: https://amigenome-api-production.up.railway.app
+- Chat endpoint: POST /companion/genome/chat
+- Pro tier: €9.99/month via Stripe
